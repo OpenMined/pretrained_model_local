@@ -1,21 +1,17 @@
 #!/bin/sh
+
 set -e
 
-if [ ! -d ".venv" ]; then
-    echo "Virtual environment not found. Creating one..."
-    uv venv -p 3.12 .venv
-    echo "Virtual environment created successfully."    
-else
-    echo "Virtual environment already exists."
-fi
-
+uv venv -p 3.12 .venv
+uv pip install -U syft-core
 . .venv/bin/activate
 
-uv pip install -U syftbox
+while true; do
+    echo "Running 'pretrained_model_local' with $(python3 --version) at '$(which python3)'"
+    python3 main.py
 
-# run app using python from venv
-echo "Running pre_trained_model_local with $(python3 --version) at '$(which python3)'"
-python3 main.py
+    echo "Sleeping for 10 seconds..."
+    sleep 10
+done
 
-# deactivate the virtual environment
 deactivate
